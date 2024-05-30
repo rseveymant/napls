@@ -97,21 +97,40 @@ students = [
 ideal_capacity_lower = [s / 0.85 for s in students]
 ideal_capacity_upper = [s / 0.75 for s in students]
 
+# Current maximum capacity
+current_capacity = 6001
+
+# Calculate additional capacity needed
+additional_capacity_lower = [max(0, icl - current_capacity) for icl in ideal_capacity_lower]
+additional_capacity_upper = [max(0, icu - current_capacity) for icu in ideal_capacity_upper]
+
 # Create the plot
-plt.figure(figsize=(12, 6))
+plt.figure(figsize=(14, 8))
 plt.plot(years, ideal_capacity_lower, label="Ideal Capacity Lower Bound (85%)", marker='o', linestyle='-', color='green')
 plt.plot(years, ideal_capacity_upper, label="Ideal Capacity Upper Bound (75%)", marker='o', linestyle='-', color='blue')
+plt.axhline(y=current_capacity, label="Current Capacity (6001)", color='purple', linestyle='--')
 
-# Annotate the required capacity
-for i, txt in enumerate(ideal_capacity_lower):
-    plt.annotate(int(txt), (years[i], ideal_capacity_lower[i]), textcoords="offset points", xytext=(0,10), ha='center')
-for i, txt in enumerate(ideal_capacity_upper):
-    plt.annotate(int(txt), (years[i], ideal_capacity_upper[i]), textcoords="offset points", xytext=(0,10), ha='center')
+# Function to annotate data points
+def annotate_with_additional_capacity(years, ideal_lower, ideal_upper, additional_lower, additional_upper):
+    for i in range(len(years)):
+        plt.annotate(f"{int(ideal_lower[i])} (+{int(additional_lower[i])})", 
+                     (years[i], ideal_lower[i]), 
+                     textcoords="offset points", 
+                     xytext=(0, 10), 
+                     ha='center', fontsize=10, color='green')
+        plt.annotate(f"{int(ideal_upper[i])} (+{int(additional_upper[i])})", 
+                     (years[i], ideal_upper[i]), 
+                     textcoords="offset points", 
+                     xytext=(0, 10), 
+                     ha='center', fontsize=10, color='blue')
 
-plt.xlabel("Time Period")
-plt.ylabel("Required Capacity")
-plt.title("Projected Required Capacity for Ideal Utilization in New Albany Schools")
-plt.legend()
+# Apply annotations
+annotate_with_additional_capacity(years, ideal_capacity_lower, ideal_capacity_upper, additional_capacity_lower, additional_capacity_upper)
+
+plt.xlabel("Time Period", fontsize=12)
+plt.ylabel("Required Capacity", fontsize=12)
+plt.title("Projected Required Capacity for Ideal Utilization in New Albany Schools", fontsize=14, weight='bold')
+plt.legend(fontsize=12)
 plt.grid(True)
-plt.ylim(0, max(ideal_capacity_upper) * 1.1)
+plt.ylim(0, max(ideal_capacity_upper) * 1.1)  # Adjust Y-axis limits to fit annotations
 plt.show()
