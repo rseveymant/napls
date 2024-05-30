@@ -34,8 +34,7 @@ This image provides a summary of the data used in the study. It includes details
    ```bash
    git clone https://github.com/yourusername/napls-utilization-study.git
    ```
-1. Navigate to the project directory: ```cd napls-utilization-study
-```
+1. Navigate to the project directory: `cd napls-utilization-study`
 
 ## Contributing
 Contributions are welcome! If you have any suggestions or improvements, feel free to create a pull request or open an issue.
